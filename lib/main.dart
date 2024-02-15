@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import './messages/generated.dart';
 
-void main() {
+void main() async {
+  await initializeRust();
   runApp(const MyApp());
 }
 
