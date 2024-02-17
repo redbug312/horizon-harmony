@@ -1,0 +1,119 @@
+name: Flutter
+
+on:
+  push:
+    branches: [ "main", "setup-ci-build" ]
+  pull_request:
+    branches: [ "main", "setup-ci-build" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.8'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    - run: echo "VERSION=$(grep 'version:.*' pubspec.yaml | cut -d' ' -f2)" | tee -a $GITHUB_ENV
+    - run: cargo install rinf
+    - run: rinf message
+    - run: flutter pub get
+    - run: flutter build apk --release
+    - uses: actions/upload-artifact@v4
+      with:
+        name: horizon-harmony-${{ env.VERSION }}-android
+        path: build/app/outputs/apk/release/app-release.apk
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.8'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    - run: echo "VERSION=$(grep 'version:.*' pubspec.yaml | cut -d' ' -f2)" | tee -a $GITHUB_ENV
+    - run: cargo install rinf
+    - run: rinf message
+    - run: flutter pub get
+    - run: flutter build ios --release --no-codesign
+    - uses: actions/upload-artifact@v4
+      with:
+        name: horizon-harmony-${{ env.VERSION }}-ios
+        path: build/ios/iphoneos/Runner.app
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.8'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    - run: echo "VERSION=$(grep 'version:.*' pubspec.yaml | cut -d' ' -f2)" | tee -a $GITHUB_ENV
+    - run: sudo apt-get update -y
+    - run: sudo apt-get install -y ninja-build libgtk-3-dev
+    - run: cargo install rinf
+    - run: rinf message
+    - run: flutter pub get
+    - run: flutter build linux --release
+    - uses: actions/upload-artifact@v4
+      with:
+        name: horizon-harmony-${{ env.VERSION }}-linux
+        path: build/linux/x64/release/bundle
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.8'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    - run: echo "VERSION=$(grep 'version:.*' pubspec.yaml | cut -d' ' -f2)" | tee -a $GITHUB_ENV
+    - run: cargo install rinf
+    - run: rinf message
+    - run: flutter pub get
+    - run: flutter build macos --release
+    - uses: actions/upload-artifact@v4
+      with:
+        name: horizon-harmony-${{ env.VERSION }}-macos
+        path: build/macos/Build/Products/Release
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.8'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    - run: echo "VERSION=$(grep 'version:.*' pubspec.yaml | cut -d' ' -f2)" | tee -a $env:GITHUB_ENV
+    - run: cargo install rinf
+    - run: rinf message
+    - run: flutter config --enable-windows-desktop
+    - run: flutter pub get
+    - run: flutter build windows --release
+    - uses: actions/upload-artifact@v4
+      with:
+        name: horizon-harmony-${{ env.VERSION }}-windows
+        path: build\windows\x64\runner\Release
