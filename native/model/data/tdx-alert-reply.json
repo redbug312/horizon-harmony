@@ -1,0 +1,25 @@
+{
+  "UpdateTime": "2024-03-17T18:10:42+08:00",
+  "UpdateInterval": 60,
+  "SrcUpdateTime": "2024-03-17T18:10:01+08:00",
+  "SrcUpdateInterval": 60,
+  "AuthorityCode": "TYMC",
+  "Alerts": [
+    {
+      "AlertID": "20240317181001",
+      "Title": "正常營運",
+      "Description": "正常營運",
+      "Status": 1,
+      "Scope": {
+        "Network": {},
+        "Stations": [],
+        "Lines": [],
+        "Routes": [],
+        "Trains": [],
+        "LineSections": []
+      },
+      "PublishTime": "2024-03-17T18:10:01+08:00",
+      "UpdateTime": "2024-03-17T18:10:01+08:00"
+    }
+  ]
+}

@@ -7,7 +7,8 @@ edition = "2021"
 
 [dependencies]
 quick-xml = { version = "0.31.0", features = ["serialize"] }
-reqwest = "0.11.26"
+reqwest = { version = "0.11.26", features = ["gzip"] }
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
+time = { version = "0.3.34", features = ["serde", "macros", "parsing"] }
 tokio = { version = "1.36.0", features = ["macros", "rt"] }
