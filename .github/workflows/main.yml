@@ -2,9 +2,7 @@ name: Flutter
 
 on:
   push:
-    branches: [ "main", "setup-ci-build" ]
   pull_request:
-    branches: [ "main", "setup-ci-build" ]
 
 env:
   CARGO_TERM_COLOR: always
