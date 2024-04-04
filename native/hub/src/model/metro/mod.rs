@@ -1,4 +1,5 @@
 mod parking_lot;
+mod track_info;
 
 #[cfg(test)]
 const QUERY_HEADER: &str = r#"<?xml version="1.0" encoding="utf-8"?>
