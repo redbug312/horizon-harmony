@@ -7,6 +7,7 @@
 use tokio_with_wasm::tokio;
 
 mod messages;
+mod presenter;
 mod sample_functions;
 
 rinf::write_interface!();
@@ -21,4 +22,5 @@ async fn main() {
     tokio::spawn(sample_functions::tell_numbers());
     tokio::spawn(sample_functions::stream_fractal());
     tokio::spawn(sample_functions::run_debug_tests());
+    tokio::spawn(presenter::fetch_track_arrivals());
 }

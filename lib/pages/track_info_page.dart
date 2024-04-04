@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../messages/station.pb.dart';
+
 class TrackInfoPage extends StatefulWidget {
   const TrackInfoPage({super.key});
 
@@ -35,28 +37,32 @@ class TrackInfoState extends State<TrackInfoPage> {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          Card(
-            child: ListTile(
-              title: Text("松山機場站 - 南港展覽館站"),
-              subtitle: Text("00:34"),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text("中山國中站 - 南港展覽館站"),
-              subtitle: Text("09:47"),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text("南京復興站 - 南港展覽館站"),
-              subtitle: Text("07:31"),
-            ),
-          ),
-        ]
-      )
+      body: StreamBuilder(
+        stream: Schedule.rustSignalStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return const Text('Done');
+          } else if (snapshot.hasError) {
+            return const Text('Error');
+          } else {
+            final schedule = snapshot.data!.message;
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final track = schedule.tracks[index];
+                return Card(
+                  child: ListTile(
+                    title: Text("${schedule.station} - ${track.destination}"),
+                    subtitle: Text(track.arrivalTime),
+                  ),
+                );
+              },
+              itemCount: schedule.tracks.length,
+            );
+          }
+        },
+      ),
     );
   }
 }
