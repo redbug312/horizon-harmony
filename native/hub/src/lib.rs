@@ -1,6 +1,8 @@
 //! This `hub` crate is the
 //! entry point of the Rust logic.
 
+use model::api::Api;
+
 // This `tokio` will be used by Rinf.
 // You can replace it with the original `tokio`
 // if you're not targeting the web.
@@ -17,7 +19,8 @@ rinf::write_interface!();
 // If you really need to use blocking code,
 // use `tokio::task::spawn_blocking`.
 async fn main() {
-    // Repeat `tokio::spawn` anywhere in your code
-    // if more concurrent tasks are needed.
-    tokio::spawn(presenter::task::refresh_track_arrivals());
+    // The reqwest client inside the api maintains a connection pool and the
+    // docs advises to clone and reuse it across the tasks.
+    let api = Api::new();
+    tokio::spawn(presenter::task::refresh_track_arrivals(api));
 }

@@ -4,15 +4,13 @@ use time::serde::format_description;
 
 format_description!(my_format, PrimitiveDateTime, "[year]-[month]-[day] [hour]:[minute]:[second]");
 
-#[cfg(test)]
-const URL: &str = "https://api.metro.taipei/metroapi/TrackInfo.asmx";
+pub const URL: &str = "https://api.metro.taipei/metroapi/TrackInfo.asmx";
 
-#[cfg(test)]
 const XMLNS: &str = "http://tempuri.org/";
 
 #[derive(Debug, Serialize)]
 #[serde(rename = "getTrackInfo")]
-struct Query {
+pub struct Query {
     #[serde(rename = "@xmlns")]
     xmlns: &'static str,
     #[serde(rename = "userName")]
@@ -22,8 +20,7 @@ struct Query {
 }
 
 impl Query {
-    #[cfg(test)]
-    fn new(username: String, password: String) -> Self {
+    pub fn new(username: String, password: String) -> Self {
         Query {
             xmlns: XMLNS,
             username,
@@ -33,17 +30,17 @@ impl Query {
 }
 
 #[derive(Debug, PartialEq, Deserialize)]
-struct Reply(Vec<TrackInfo>);
+pub struct Reply(pub Vec<TrackInfo>);
 
 #[derive(Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct TrackInfo {
-    train_number: String,
-    station_name: String,
-    destination_name: String,
-    count_down: String,
+pub struct TrackInfo {
+    pub train_number: String,
+    pub station_name: String,
+    pub destination_name: String,
+    pub count_down: String,
     #[serde(with = "my_format")]
-    now_date_time: PrimitiveDateTime,
+    pub now_date_time: PrimitiveDateTime,
 }
 
 #[cfg(test)]

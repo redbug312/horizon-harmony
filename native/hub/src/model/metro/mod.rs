@@ -1,16 +1,14 @@
 mod parking_lot;
-mod track_info;
+pub mod track_info;
 
-#[cfg(test)]
-const QUERY_HEADER: &str = r#"<?xml version="1.0" encoding="utf-8"?>
+pub const QUERY_HEADER: &str = r#"<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
 "#;
 
-#[cfg(test)]
-const QUERY_FOOTER: &str = r#"</soap:Body>
+pub const QUERY_FOOTER: &str = r#"</soap:Body>
 </soap:Envelope>
 "#;
 
