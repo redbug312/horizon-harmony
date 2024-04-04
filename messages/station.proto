@@ -1,0 +1,14 @@
+syntax = "proto3";
+package station;
+
+// [RINF:RUST-SIGNAL]
+message Schedule {
+  string station = 1;
+  repeated Track tracks = 2;
+  string lookup_time = 3;
+}
+
+message Track {
+  string destination = 1;
+  string arrival_time = 2;
+}

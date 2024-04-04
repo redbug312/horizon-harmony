@@ -7,7 +7,6 @@
 use tokio_with_wasm::tokio;
 
 mod messages;
-mod sample_functions;
 
 rinf::write_interface!();
 
@@ -18,7 +17,7 @@ rinf::write_interface!();
 async fn main() {
     // Repeat `tokio::spawn` anywhere in your code
     // if more concurrent tasks are needed.
-    tokio::spawn(sample_functions::tell_numbers());
-    tokio::spawn(sample_functions::stream_fractal());
-    tokio::spawn(sample_functions::run_debug_tests());
+    // tokio::spawn(sample_functions::tell_numbers());
+    // tokio::spawn(sample_functions::stream_fractal());
+    // tokio::spawn(sample_functions::run_debug_tests());
 }
