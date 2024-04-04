@@ -129,7 +129,11 @@ class HomePageState extends State<HomePage> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
             itemCount: services.length,
             itemBuilder: (context, index) => InkWell(
-              onTap: () {},
+              onTap: () {
+                if (index == 7) {
+                  Navigator.pushNamed(context, '/track_info');
+                }
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
