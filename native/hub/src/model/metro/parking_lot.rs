@@ -43,7 +43,7 @@ struct ParkingLot {
 
 #[cfg(test)]
 mod tests {
-    use crate::metro::{QUERY_HEADER, QUERY_FOOTER, remove_newline};
+    use crate::model::metro::{QUERY_HEADER, QUERY_FOOTER, remove_newline};
     use reqwest::header::CONTENT_TYPE;
     use super::*;
 
@@ -57,7 +57,7 @@ mod tests {
             .expect("builtin type must be serializable");
 
         let actual = [QUERY_HEADER, &xml, QUERY_FOOTER].concat();
-        let expect = include_str!("../../data/metro-parking-lot-query.xml");
+        let expect = include_str!("../../../data/metro-parking-lot-query.xml");
         assert_eq!(remove_newline(actual), remove_newline(expect));
     }
 
@@ -89,7 +89,7 @@ mod tests {
             ],
         );
 
-        let json = include_str!("../../data/metro-parking-lot-reply.json");
+        let json = include_str!("../../../data/metro-parking-lot-reply.json");
 
         let actual: Reply = serde_json::from_str(&json).unwrap();
         let expect = reply;

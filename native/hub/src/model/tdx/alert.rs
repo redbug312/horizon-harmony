@@ -99,7 +99,7 @@ mod tests {
             ],
         };
 
-        let json = include_str!("../../data/tdx-alert-reply.json");
+        let json = include_str!("../../../data/tdx-alert-reply.json");
 
         let actual: Reply = serde_json::from_str(&json).unwrap();
         let expect = reply;

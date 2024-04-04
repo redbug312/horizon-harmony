@@ -7,6 +7,8 @@
 use tokio_with_wasm::tokio;
 
 mod messages;
+mod model;
+mod presenter;
 
 rinf::write_interface!();
 
