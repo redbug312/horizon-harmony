@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:horizon_harmony/pages/home_page.dart';
+import 'package:horizon_harmony/pages/track_info_page.dart';
 import './messages/generated.dart';
 
 void main() async {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       home: const HomePage(),
       routes: {
         '/home': (context) => const HomePage(),
+        '/track_info': (context) => const TrackInfoPage(),
       },
     );
   }
