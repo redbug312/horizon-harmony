@@ -1,6 +1,15 @@
 syntax = "proto3";
 package station;
 
+// [RINF:DART-SIGNAL]
+message Refresh {
+  repeated Interest interests = 1;
+}
+
+enum Interest {
+  ARRIVALS = 0;
+}
+
 // [RINF:RUST-SIGNAL]
 message Schedule {
   string station = 1;

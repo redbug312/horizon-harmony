@@ -5,7 +5,7 @@ use time::OffsetDateTime;
 use tokio::time::MissedTickBehavior;
 use tokio_with_wasm::tokio;
 
-use crate::messages::station::{Schedule, Track};
+use crate::messages::station::{Interest, Refresh, Schedule, Track};
 use crate::model::metro::track_info;
 use crate::model::api::Api;
 
@@ -15,8 +15,20 @@ pub async fn refresh_track_arrivals(api: Api) {
     let mut interval = tokio::time::interval(REFRESH_COOLDOWN);
     interval.set_missed_tick_behavior(MissedTickBehavior::Delay);
 
+    let mut receiver = Refresh::get_dart_signal_receiver();
+    while let Some(refresh) = receiver.recv().await {
+        let arrivals = Interest::Arrivals as i32;
+        if refresh.message.interests.contains(&arrivals) {
+            debug_print!("Enable interest for track arrivals");
+            break;
+        }
+    }
+
     loop {
-        interval.tick().await;
+        tokio::select!(
+            _tick = interval.tick() => (),
+            _recv = receiver.recv() => (),
+        );
 
         let reply = api.fetch_track_info().await;
         let schedule = Schedule::from(reply);

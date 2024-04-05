@@ -12,6 +12,14 @@ class TrackInfoPage extends StatefulWidget {
 
 class TrackInfoState extends State<TrackInfoPage> {
   @override
+  void initState() {
+    super.initState();
+    var refresh = Refresh();
+    refresh.interests.add(Interest.ARRIVALS);
+    refresh.sendSignalToRust(null);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
