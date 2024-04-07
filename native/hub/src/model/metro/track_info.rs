@@ -1,9 +1,7 @@
 use serde::{Deserialize, Serialize};
-use time::PrimitiveDateTime;
-use time::serde::format_description;
+use time::OffsetDateTime;
 
-format_description!(my_format, PrimitiveDateTime, "[year]-[month]-[day] [hour]:[minute]:[second]");
-
+use super::parse_optional_date_time;
 pub const URL: &str = "https://api.metro.taipei/metroapi/TrackInfo.asmx";
 
 const XMLNS: &str = "http://tempuri.org/";
@@ -39,8 +37,8 @@ pub struct TrackInfo {
     pub station_name: String,
     pub destination_name: String,
     pub count_down: String,
-    #[serde(with = "my_format")]
-    pub now_date_time: PrimitiveDateTime,
+    #[serde(deserialize_with = "parse_optional_date_time")]
+    pub now_date_time: Option<OffsetDateTime>,
 }
 
 #[cfg(test)]
@@ -73,21 +71,21 @@ mod tests {
                     station_name: "松山機場站".to_owned(),
                     destination_name: "南港展覽館站".to_owned(),
                     count_down: "00:34".to_owned(),
-                    now_date_time: datetime!(2024-04-04 23:27:09),
+                    now_date_time: Some(datetime!(2024-04-04 23:27:09 +8)),
                 },
                 TrackInfo {
                     train_number: "".to_owned(),
                     station_name: "中山國中站".to_owned(),
                     destination_name: "南港展覽館站".to_owned(),
                     count_down: "09:47".to_owned(),
-                    now_date_time: datetime!(2024-04-04 23:27:09),
+                    now_date_time: Some(datetime!(2024-04-04 23:27:09 +8)),
                 },
                 TrackInfo {
                     train_number: "".to_owned(),
                     station_name: "南京復興站".to_owned(),
                     destination_name: "南港展覽館站".to_owned(),
                     count_down: "07:31".to_owned(),
-                    now_date_time: datetime!(2024-04-04 23:27:09),
+                    now_date_time: Some(datetime!(2024-04-04 23:27:09 +8)),
                 },
             ],
         );
@@ -97,6 +95,14 @@ mod tests {
         let actual: Reply = serde_json::from_str(&json).unwrap();
         let expect = reply;
         assert_eq!(actual, expect);
+
+        // Regression test for invalid track info. The model should distinguish
+        // them by filtering now_date_time field.
+        let json_with_invalid_item =
+            include_str!("../../../data/metro-track-info-reply-with-invalid-item.json");
+        let reply: Reply = serde_json::from_str(&json_with_invalid_item).unwrap();
+        assert!(reply.0[0].now_date_time.is_none());
+        assert!(reply.0[1].now_date_time.is_some());
     }
 
     #[tokio::test]
