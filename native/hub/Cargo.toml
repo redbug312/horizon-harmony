@@ -23,3 +23,4 @@ serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
 time = { version = "0.3.34", features = ["serde", "macros", "parsing", "local-offset"] }
 tokio = { version = "1.36.0", features = ["macros", "rt"] }
+openssl = { version = "0.10.64", features = ["vendored"] }

@@ -6,26 +6,22 @@ use crate::model::metro::{track_info, QUERY_FOOTER, QUERY_HEADER};
 #[derive(Clone)]
 pub struct Api {
     client: Client,
-    metro_username: String,
-    metro_password: String,
+    metro_username: &'static str,
+    metro_password: &'static str,
 }
 
 impl Api {
     pub fn new() -> Self {
-        let username = std::env::var("METRO_USERNAME")
-            .expect("METRO_USERNAME must be specified");
-        let password = std::env::var("METRO_PASSWORD")
-            .expect("METRO_PASSWORD must be specified");
         Api {
             client: reqwest::Client::new(),
-            metro_username: username,
-            metro_password: password,
+            metro_username: std::env!("METRO_USERNAME"),
+            metro_password: std::env!("METRO_PASSWORD"),
         }
     }
 
     pub async fn fetch_track_info(&self) -> track_info::Reply {
-        let username = self.metro_username.clone();
-        let password = self.metro_password.clone();
+        let username = self.metro_username.to_owned();
+        let password = self.metro_password.to_owned();
         let query = track_info::Query::new(username, password);
 
         let xml = quick_xml::se::to_string(&query)
