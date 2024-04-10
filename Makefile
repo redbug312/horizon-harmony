@@ -8,6 +8,11 @@ SECRETS ?= METRO_USERNAME=$(METRO_USERNAME) \
 	TDX_ID=$(TDX_ID) \
 	TDX_SECRET=$(TDX_SECRET)
 
+.PHONY: run
+run:
+	rinf message
+	$(SECRETS) flutter run
+
 .PHONY: test-api
 test-api:
 	TDX_ACCESS_TOKEN=$(shell curl \
