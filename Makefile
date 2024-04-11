@@ -12,6 +12,8 @@ SECRETS ?= METRO_USERNAME=$(METRO_USERNAME) \
 run:
 	rinf message
 	$(SECRETS) flutter run
+	
+# If the system is windows, please run in git bash and add "-d windows" after flutter run
 
 .PHONY: test-api
 test-api:

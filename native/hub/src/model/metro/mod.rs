@@ -37,6 +37,6 @@ where
 fn remove_newline(input: impl AsRef<str>) -> String {
     let input = input.as_ref();
     let mut output = String::with_capacity(input.len());
-    input.split("\n").for_each(|line| output.push_str(line));
+    input.lines().for_each(|line| output.push_str(line));
     output
 }

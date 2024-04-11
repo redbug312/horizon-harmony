@@ -53,6 +53,8 @@ Now you can run and build this app just like any other Flutter projects.
 ```bash
 flutter run
 ```
+If the system is windows, please run in git bash and add "-d windows" after flutter run
+in Makefile.
 
 For detailed instructions on writing Rust and Flutter together,
 please refer to Rinf's [documentation](https://rinf.cunarist.com).
